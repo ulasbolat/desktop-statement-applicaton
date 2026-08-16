@@ -110,7 +110,22 @@ export interface Database {
           is_public?: boolean;
           share_slug?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "decks_owner_id_fkey";
+            columns: ["owner_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "decks_source_document_id_fkey";
+            columns: ["source_document_id"];
+            isOneToOne: false;
+            referencedRelation: "source_documents";
+            referencedColumns: ["id"];
+          },
+        ];
       };
 
       questions: {
@@ -134,7 +149,15 @@ export interface Database {
           explanation: string;
         };
         Update: never;
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "questions_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "decks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
 
       flashcards: {
@@ -154,7 +177,15 @@ export interface Database {
           back: string;
         };
         Update: never;
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "flashcards_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "decks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
 
       reviews: {
@@ -186,7 +217,29 @@ export interface Database {
           wrong_count?: number;
           last_answered?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "reviews_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_question_id_fkey";
+            columns: ["question_id"];
+            isOneToOne: false;
+            referencedRelation: "questions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "decks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
 
       attempts: {
@@ -206,7 +259,22 @@ export interface Database {
           total_count: number;
         };
         Update: never;
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "attempts_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "attempts_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "decks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
 
       llm_usage_logs: {
@@ -238,7 +306,22 @@ export interface Database {
           latency_ms?: number | null;
         };
         Update: never;
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "llm_usage_logs_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "llm_usage_logs_deck_id_fkey";
+            columns: ["deck_id"];
+            isOneToOne: false;
+            referencedRelation: "decks";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: Record<never, never>;
