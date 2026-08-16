@@ -146,7 +146,7 @@ export function UploadDropzone({ kalanHak }: { kalanHak: number }) {
           </p>
         ) : (
           <>
-            <p className="font-medium">Ders PDF'ini buraya sürükle</p>
+            <p className="font-medium">Ders PDF’ini buraya sürükle</p>
             <p className="mt-1 text-sm text-stone-600">
               En fazla {LIMITS.maxPageCount} sayfa, {LIMITS.maxFileBytes / 1024 / 1024} MB
             </p>

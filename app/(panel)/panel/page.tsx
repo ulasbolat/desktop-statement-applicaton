@@ -30,7 +30,7 @@ export default async function PanelSayfasi() {
       <section>
         <h1 className="text-2xl font-bold">Yeni deste</h1>
         <p className="mt-1 text-sm text-stone-600">
-          Ders slaytını yükle, içerikten sorular ve flashcard'lar üretilsin.
+          Ders slaytını yükle, içerikten sorular ve flashcard’lar üretilsin.
         </p>
         <div className="mt-4">
           <UploadDropzone kalanHak={limit.kalan} />
@@ -50,7 +50,7 @@ export default async function PanelSayfasi() {
           </ul>
         ) : (
           <p className="mt-4 rounded-xl border border-dashed border-stone-300 bg-white p-8 text-center text-sm text-stone-600">
-            Henüz desten yok. Yukarıdan ilk PDF'ini yükle.
+            Henüz desten yok. Yukarıdan ilk PDF’ini yükle.
           </p>
         )}
       </section>

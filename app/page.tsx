@@ -31,7 +31,7 @@ export default async function AnaSayfa() {
           Ders slaytını quize çevir
         </h1>
         <p className="mt-5 text-lg text-pretty text-stone-600">
-          PDF'ini yükle, sistem içerikten çoktan seçmeli sorular ve flashcard'lar
+          PDF’ini yükle, sistem içerikten çoktan seçmeli sorular ve flashcard’lar
           üretsin. Yanlış yaptığın sorular aralıklı tekrar kuyruğuna girsin.
         </p>
 

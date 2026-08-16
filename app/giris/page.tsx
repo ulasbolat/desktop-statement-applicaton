@@ -41,7 +41,7 @@ export default async function GirisSayfasi({
 
         <p className="mt-6 text-xs leading-relaxed text-stone-500">
           Giriş yaparak yüklediğin dosyaların soru üretmek için işlenmesini
-          kabul etmiş olursun. PDF'lerin başkalarıyla paylaşılmaz.
+          kabul etmiş olursun. PDF’lerin başkalarıyla paylaşılmaz.
         </p>
       </div>
     </main>
