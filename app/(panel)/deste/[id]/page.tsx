@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 import { GenerationStatus } from "@/components/generation-status";
+import { ShareToggle } from "@/components/share-toggle";
 import { createClient, getUser } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -96,6 +97,17 @@ export default async function DesteSayfasi({
               {kartSayisi ?? 0} flashcard ile hızlı tekrar.
             </p>
           </Link>
+        </div>
+      ) : null}
+
+      {hazir ? (
+        <div className="mt-6">
+          <ShareToggle
+            deckId={deste.id}
+            baslangicAcik={deste.is_public}
+            baslangicSlug={deste.share_slug}
+            hazirMi={hazir}
+          />
         </div>
       ) : null}
     </div>
