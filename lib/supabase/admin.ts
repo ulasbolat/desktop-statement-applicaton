@@ -3,6 +3,7 @@ import "server-only";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 import { publicEnv, serverEnv } from "@/lib/env";
+import type { Database } from "@/types/database";
 
 /**
  * Service role client'ı — RLS'i TAMAMEN bypass eder.
@@ -16,7 +17,7 @@ import { publicEnv, serverEnv } from "@/lib/env";
  * build hata verir.
  */
 export function createAdminClient() {
-  return createSupabaseClient(
+  return createSupabaseClient<Database>(
     publicEnv.supabaseUrl,
     serverEnv().supabaseServiceRoleKey,
     {

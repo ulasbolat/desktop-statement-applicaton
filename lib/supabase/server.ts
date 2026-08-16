@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
 import { publicEnv } from "@/lib/env";
+import type { Database } from "@/types/database";
 
 /**
  * Server component / route handler için Supabase client'ı.
@@ -12,23 +13,27 @@ import { publicEnv } from "@/lib/env";
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(publicEnv.supabaseUrl, publicEnv.supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        try {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options);
+  return createServerClient<Database>(
+    publicEnv.supabaseUrl,
+    publicEnv.supabaseAnonKey,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            for (const { name, value, options } of cookiesToSet) {
+              cookieStore.set(name, value, options);
+            }
+          } catch {
+            // Server component içinden cookie yazılamaz. Oturum yenilemesini
+            // zaten proxy.ts yapıyor, burada sessizce geçmek güvenli.
           }
-        } catch {
-          // Server component içinden cookie yazılamaz. Oturum yenilemesini
-          // zaten proxy.ts yapıyor, burada sessizce geçmek güvenli.
-        }
+        },
       },
     },
-  });
+  );
 }
 
 /** Oturum açmış kullanıcıyı döner, yoksa null. */
