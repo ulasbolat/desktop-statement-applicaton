@@ -1,14 +1,23 @@
 import { NextResponse, type NextRequest } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Google'dan dönüş noktası. Supabase bize bir `code` verir, biz onu
- * oturum cookie'sine çeviririz.
+ * Auth dönüş noktası. İki farklı akış buraya düşüyor:
+ *
+ *  1. Google (OAuth) → `code` parametresi gelir, oturuma çevrilir.
+ *  2. E-posta ile kayıt doğrulaması → Supabase'in e-posta şablonuna göre
+ *     ya `code` ya da `token_hash` + `type` gelir.
+ *
+ * İkisini de karşılıyoruz ki kullanıcı hangi yöntemle gelirse gelsin
+ * "Giriş tamamlanamadı" ekranıyla karşılaşmasın.
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
+  const tokenHash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
   const devam = searchParams.get("devam");
 
   // Açık yönlendirme (open redirect) koruması: sadece kendi sitemizdeki
@@ -17,16 +26,26 @@ export async function GET(request: NextRequest) {
   const hedef =
     devam && devam.startsWith("/") && !devam.startsWith("//") ? devam : "/panel";
 
-  if (!code) {
-    return NextResponse.redirect(`${origin}/giris?hata=kod_yok`);
-  }
-
   const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-  if (error) {
-    return NextResponse.redirect(`${origin}/giris?hata=oturum`);
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(`${origin}/giris?hata=oturum`);
+    }
+    return NextResponse.redirect(`${origin}${hedef}`);
   }
 
-  return NextResponse.redirect(`${origin}${hedef}`);
+  if (tokenHash && type) {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type,
+    });
+    if (error) {
+      return NextResponse.redirect(`${origin}/giris?hata=dogrulama`);
+    }
+    return NextResponse.redirect(`${origin}${hedef}`);
+  }
+
+  return NextResponse.redirect(`${origin}/giris?hata=kod_yok`);
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { EpostaFormu } from "./eposta-formu";
 import { GoogleGirisButonu } from "./google-giris-butonu";
 
 export const metadata: Metadata = { title: "Giriş" };
@@ -26,6 +27,9 @@ export default async function GirisSayfasi({
           yapman gerekiyor.
         </p>
 
+        {/* Bir bilgi: Google ve e-posta aynı adrese bağlıysa Supabase iki
+            yöntemi tek hesapta birleştirir; ayrı hesap oluşmaz. */}
+
         {hata ? (
           <p
             role="alert"
@@ -38,6 +42,14 @@ export default async function GirisSayfasi({
         <div className="mt-8">
           <GoogleGirisButonu devam={typeof devam === "string" ? devam : null} />
         </div>
+
+        <div className="my-6 flex items-center gap-3">
+          <span className="h-px flex-1 bg-stone-200" />
+          <span className="text-xs text-stone-500">veya e-posta ile</span>
+          <span className="h-px flex-1 bg-stone-200" />
+        </div>
+
+        <EpostaFormu devam={typeof devam === "string" ? devam : null} />
 
         <p className="mt-6 text-xs leading-relaxed text-stone-500">
           Giriş yaparak yüklediğin dosyaların soru üretmek için işlenmesini
